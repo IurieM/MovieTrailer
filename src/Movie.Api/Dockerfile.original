@@ -1,0 +1,24 @@
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+COPY ["src/Movie.Api/Movie.Api.csproj", "src/Movie.Api/"]
+RUN dotnet restore "src/Movie.Api/Movie.Api.csproj"
+COPY . .
+WORKDIR "/src/src/Movie.Api"
+RUN dotnet build "Movie.Api.csproj" -c Release -o /app
+
+WORKDIR "/src/src/Movie.Api/Client"
+RUN npm install --production
+RUN npm run build-prod
+
+FROM build AS publish
+WORKDIR "/src/src/Movie.Api"
+RUN dotnet publish "Movie.Api.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "Movie.Api.dll"]

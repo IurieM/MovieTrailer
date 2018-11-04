@@ -1,0 +1,12 @@
+<mat-card style="margin-top:50px">
+    <mat-card-content>
+        <search-movie (onSearch)="onSearch($event)"></search-movie>
+        <mat-list>
+            <mat-list-item *ngFor="let movie of movies">
+                <mat-icon mat-list-icon>movie</mat-icon>
+                <a [href]="movie.link" mat-line>{{movie.title}}</a>
+                <p mat-line> {{movie.provider}} </p>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+</mat-card>

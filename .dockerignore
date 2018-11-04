@@ -1,0 +1,12 @@
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.vscode
+docker-compose*.yml
+**/bin/
+**/obj/
+**/.toolstarget
+**/node_modules/
+src/Movie.Api/client/

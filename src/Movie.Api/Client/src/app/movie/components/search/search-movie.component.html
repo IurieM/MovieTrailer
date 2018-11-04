@@ -1,0 +1,19 @@
+<form role="form" #f="ngForm">
+    <div class="row">
+        <div class="col-lg-7 offset-lg-2">
+            <mat-form-field>
+                <input matInput [placeholder]="'Trailer.Title' | translate" [(ngModel)]="searchQuery.search" name="title">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2 pull-right action">
+            <button name="search" (click)="search()" mat-icon-button color="primary" matTooltipHideDelay="300" [matTooltip]="'Search' | translate"
+                matTooltipPosition="below">
+                <mat-icon class="mat-24">search</mat-icon>
+            </button>
+            <button name="clear" (click)="clear()" mat-icon-button color="primary" matTooltipHideDelay="300" [matTooltip]="'Clear' | translate"
+                matTooltipPosition="below">
+                <mat-icon class="mat-24">clear</mat-icon>
+            </button>
+        </div>
+    </div>
+</form>

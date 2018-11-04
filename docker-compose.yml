@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+    
+    movie.api:
+        image: movie/movie.api
+        ports:
+            - "5000:5000"
+        build:
+          context: .
+          dockerfile: src/Movie.Api/Dockerfile
+        networks:
+            - esnetwork
+        depends_on:
+            - elasticsearch
+    
+    youtube.api:
+        image: movie/youtube.api
+        ports:
+            - "5002:5002"
+        build:
+          context: .
+          dockerfile: src/TrailerApis/Youtube.Api/Dockerfile    
+        networks:
+            - esnetwork
+        depends_on:
+            - movie.api
+            
+    vimeo.api:
+        image: movie/vimeo.api
+        ports:
+            - "5001:5001"
+        build:
+          context: .
+          dockerfile: src/TrailerApis/Vimeo.Api/Dockerfile   
+        networks:
+            - esnetwork          
+        depends_on:
+            - movie.api
+            
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        volumes:
+            - esdata:/usr/share/elasticsearch/data
+        networks:
+            - esnetwork
+    kibana:
+        image: docker.elastic.co/kibana/kibana:6.3.0
+        ports:
+            - "5601:5601"
+        networks:
+            - esnetwork
+        depends_on:
+            - elasticsearch
+volumes:
+    esdata:
+        driver: local
+networks:
+    esnetwork:
+        driver: bridge
+
